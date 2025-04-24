@@ -40,17 +40,23 @@ public class AdapterEmpleado extends RecyclerView.Adapter<AdapterEmpleado.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Empleado empleado = empleados.get(position);
-        holder.nombreTextView.setText(empleado.getNombre() + " " + empleado.getApellido());
-        holder.salarioTextView.setText("Salario: $" + empleado.calcularSalario());
-
-        // Establecer color de fondo según el tipo de empleado
+        
+        // Configurar el texto del tipo de empleado
+        String tipoEmpleado = "";
         if (empleado instanceof Gerente) {
+            tipoEmpleado = "Gerente";
             holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.colorGerente));
         } else if (empleado instanceof TecnicoSenior) {
+            tipoEmpleado = "Técnico Senior";
             holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.colorTecnicoSenior));
         } else if (empleado instanceof Tecnico) {
+            tipoEmpleado = "Técnico";
             holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.colorTecnico));
         }
+
+        holder.nombreTextView.setText(empleado.getNombre() + " " + empleado.getApellido());
+        holder.tipoTextView.setText(tipoEmpleado);
+        holder.salarioTextView.setText("Salario: $" + empleado.calcularSalario());
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, ActivityEmpleado.class);
@@ -66,12 +72,14 @@ public class AdapterEmpleado extends RecyclerView.Adapter<AdapterEmpleado.ViewHo
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView nombreTextView;
+        public TextView tipoTextView;
         public TextView salarioTextView;
         public CardView cardView;
 
         public ViewHolder(View itemView) {
             super(itemView);
             nombreTextView = itemView.findViewById(R.id.nombreTextView);
+            tipoTextView = itemView.findViewById(R.id.tipoTextView);
             salarioTextView = itemView.findViewById(R.id.salarioTextView);
             cardView = itemView.findViewById(R.id.cardView);
         }
